@@ -78,6 +78,7 @@ export default function Page() {
     });
 
     socket.on('voiceboard-ready', (data: any) => {
+      console.log('Voiceboard ready:', data);
       setIsInitializing(false);
       setMessages(prev => [...prev, {
         type: 'system',
@@ -87,6 +88,7 @@ export default function Page() {
     });
 
     socket.on('response', (data: any) => {
+      console.log('Received response:', data);
       setMessages(prev => [...prev, {
         type: 'ai',
         content: data.message,
@@ -96,10 +98,12 @@ export default function Page() {
     });
 
     socket.on('typing', (typing: boolean) => {
+      console.log('Typing indicator:', typing);
       setIsTyping(typing);
     });
 
     socket.on('status', (data: any) => {
+      console.log('Status message:', data);
       setMessages(prev => [...prev, {
         type: 'system',
         content: data.message,
@@ -108,6 +112,7 @@ export default function Page() {
     });
 
     socket.on('error', (data: any) => {
+      console.log('Error received:', data);
       setMessages(prev => [...prev, {
         type: 'error',
         content: data.message,
@@ -129,12 +134,14 @@ export default function Page() {
   const handleCreateVoiceboard = () => {
     const personName = customName.trim() || selectedClone?.name;
     if (!personName) return;
+    console.log('Creating voiceboard for:', personName);
     setIsInitializing(true);
     socketRef.current?.emit('create-voiceboard', { personName });
   };
 
   const handleSendMessage = () => {
-    if (!inputMessage.trim() || isTyping || (!selectedClone && !customName.trim())) return;
+    if (!inputMessage.trim() || isTyping || isInitializing) return;
+    console.log('Sending message:', inputMessage);
     setMessages(prev => [...prev, {
       type: 'user',
       content: inputMessage,
