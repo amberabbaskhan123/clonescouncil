@@ -3,9 +3,7 @@
 
 import * as React from "react";
 import { cn } from "../src/lib/utils";
-import { ScrollArea, ScrollBar } from "../components/ui/scroll-area";
 import { Textarea } from "../components/ui/textarea";
-import { Avatar, AvatarFallback } from "../components/ui/avatar";
 import html2canvas from 'html2canvas';
 import { balloons } from 'balloons-js';
 import { Share2 } from 'lucide-react';
